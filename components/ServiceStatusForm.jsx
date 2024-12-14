@@ -18,13 +18,95 @@ const ServiceSchema = z.object({
   serviceStatus: z.enum(["Operational", "Degraded Performance", "Partial Outage", "Major Outage"])
 });
 
+// const submitServiceStatus = async (e) => {
+//   e.preventDefault();
+  
+//   // Validate the form before submission
+//   if (!validateForm()) return;
+
+//   try {
+//     // Here you can perform the actual API call to submit the data
+//     // For example, using fetch:
+//     const response = await fetch("/api/submit-service-status", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(formData),
+//     });
+
+//     if (!response.ok) {
+//       throw new Error("Failed to submit service status");
+//     }
+
+//     // If successful, reset form data or show a success message
+//     setFormData({
+//       serviceName: "",
+//       link: "",
+//       method: "",
+//       serviceStatus: "",
+//     });
+
+//     alert("Service status submitted successfully");
+//   } catch (err) {
+//     console.error("Error submitting service status:", err);
+//     alert("Failed to submit service status");
+//   }
+// };
+
+const submitServiceStatus = async (e) => {
+  e.preventDefault();
+
+  // Collect form data
+  const formData = new FormData(e.target);
+  const data = {
+    serviceName: formData.get("serviceName"),
+    link: formData.get("link"),
+    method: formData.get("method"),
+    serviceStatus: formData.get("serviceStatus"),
+  };
+
+  try {
+    // Validate the data using Zod schema
+    const validatedData = ServiceSchema.parse(data);
+
+    // Make the API call
+    const response = await fetch("/api/submit-status", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(validatedData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to submit service status");
+    }
+
+    // Handle successful response
+    const result = await response.json();
+    alert("Service status updated successfully: " + result.message);
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      // Zod validation errors
+      alert(
+        "Validation error: " +
+          err.errors.map((error) => error.message).join(", ")
+      );
+    } else {
+      // General errors
+      console.error("Error submitting service status:", err);
+      alert("Failed to submit service status");
+    }
+  }
+};
 
 
 export default function ServiceStatusForm() {
   return (
     <div className="max-w-md mx-auto space-y-4 p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-xl font-bold mb-4">Service Status Form</h2>
-      <form action={()=>submitServiceStatus} className="space-y-4">
+      <form onSubmit={submitServiceStatus} className="space-y-4">
         {/* Service Name Input */}
         <div className="space-y-2">
           <Label htmlFor="serviceName">Service Name</Label>
