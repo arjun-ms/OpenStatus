@@ -20,12 +20,18 @@ import ServiceStatusForm from "@/components/ServiceStatusForm";
 const Monitors = () => {
   const [monitors, setMonitors] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
-  const handleCreateMonitor = () => {
+
+  const handleCreateMonitor = (result) => {
     toast({
       title: "Coming soon!",
       description: "Monitor creation will be implemented in the next version.",
     });
+
+    setIsDialogOpen(false);
+    // Optionally update the monitors list
+    setMonitors(prev => [...prev, result.data]);
   };
 
   return (
@@ -38,7 +44,7 @@ const Monitors = () => {
               Overview of all your monitors.
             </p>
           </div>
-          <Dialog>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button onClick={handleCreateMonitor}>
                 <Plus className="w-4 h-4 mr-2" />
@@ -50,7 +56,7 @@ const Monitors = () => {
                 
                 
                 <DialogTitle>Form</DialogTitle>
-                <ServiceStatusForm/>
+                <ServiceStatusForm onSuccess={handleCreateMonitor} />
                 
                 {/* <DialogDescription>
                   This action cannot be undone. This will permanently delete
@@ -78,7 +84,7 @@ const Monitors = () => {
             {/* Monitor list will be implemented in next version */}
           </div>
         ) : (
-          <EmptyState onCreateClick={handleCreateMonitor} />
+          <EmptyState onCreateClick={() => setIsDialogOpen(true)} />
         )}
       </main>
     </div>

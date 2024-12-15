@@ -1,15 +1,15 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
-import prismadb from "@/prisma/prismadb";
+import prismadb from "@/lib/prismadb";
 import { inter } from "@/lib/fonts";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import Monitors from "./components/Monitors";
-
 
 export const metadata = {
   title: "Home",
 };
 
+// async means it will perform some asynchronous tasks (like fetching data) before returning the UI.
 export default async function Page() {
   // get the session of logged in user
   const { getUser } = getKindeServerSession();
@@ -26,6 +26,8 @@ export default async function Page() {
       kindeId: user?.id,
     },
   });
+
+  // If no user is found in the database (i.e., dbUser is null), it redirects the user to the authentication page (/auth-callback?origin=dashboard), as the user needs to be authenticated in the system.
   if (!dbUser) {
     redirect("/auth-callback?origin=dashboard");
   }
