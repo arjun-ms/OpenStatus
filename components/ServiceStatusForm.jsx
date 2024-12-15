@@ -12,47 +12,18 @@ import { Label } from "@/components/ui/label";
 
 // Validation schema
 const ServiceSchema = z.object({
-  serviceName: z.string().min(2, { message: "Service name must be at least 2 characters" }),
+  serviceName: z
+    .string()
+    .min(2, { message: "Service name must be at least 2 characters" }),
   link: z.string().url({ message: "Invalid URL" }),
   method: z.enum(["GET", "POST"]),
-  serviceStatus: z.enum(["Operational", "Degraded Performance", "Partial Outage", "Major Outage"])
+  serviceStatus: z.enum([
+    "Operational",
+    "Degraded_Performance",
+    "Partial_Outage",
+    "Major_Outage",
+  ]),
 });
-
-// const submitServiceStatus = async (e) => {
-//   e.preventDefault();
-  
-//   // Validate the form before submission
-//   if (!validateForm()) return;
-
-//   try {
-//     // Here you can perform the actual API call to submit the data
-//     // For example, using fetch:
-//     const response = await fetch("/api/submit-service-status", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(formData),
-//     });
-
-//     if (!response.ok) {
-//       throw new Error("Failed to submit service status");
-//     }
-
-//     // If successful, reset form data or show a success message
-//     setFormData({
-//       serviceName: "",
-//       link: "",
-//       method: "",
-//       serviceStatus: "",
-//     });
-
-//     alert("Service status submitted successfully");
-//   } catch (err) {
-//     console.error("Error submitting service status:", err);
-//     alert("Failed to submit service status");
-//   }
-// };
 
 const submitServiceStatus = async (e) => {
   e.preventDefault();
@@ -71,7 +42,7 @@ const submitServiceStatus = async (e) => {
     const validatedData = ServiceSchema.parse(data);
 
     // Make the API call
-    const response = await fetch("/api/submit-status", {
+    const response = await fetch("/api/status", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -97,10 +68,9 @@ const submitServiceStatus = async (e) => {
       // General errors
       console.error("Error submitting service status:", err);
       alert("Failed to submit service status");
-    }
-  }
+    }
+  }
 };
-
 
 export default function ServiceStatusForm() {
   return (
@@ -110,24 +80,24 @@ export default function ServiceStatusForm() {
         {/* Service Name Input */}
         <div className="space-y-2">
           <Label htmlFor="serviceName">Service Name</Label>
-          <Input 
-            type="text" 
-            id="serviceName" 
-            name="serviceName" 
-            placeholder="Enter service name" 
-            required 
+          <Input
+            type="text"
+            id="serviceName"
+            name="serviceName"
+            placeholder="Enter service name"
+            required
           />
         </div>
 
         {/* Link Input */}
         <div className="space-y-2">
           <Label htmlFor="link">Service Link</Label>
-          <Input 
-            type="url" 
-            id="link" 
-            name="link" 
-            placeholder="https://example.com" 
-            required 
+          <Input
+            type="url"
+            id="link"
+            name="link"
+            placeholder="https://example.com"
+            required
           />
         </div>
 
@@ -154,9 +124,11 @@ export default function ServiceStatusForm() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="Operational">Operational</SelectItem>
-              <SelectItem value="Degraded Performance">Degraded Performance</SelectItem>
-              <SelectItem value="Partial Outage">Partial Outage</SelectItem>
-              <SelectItem value="Major Outage">Major Outage</SelectItem>
+              <SelectItem value="Degraded_Performance">
+                Degraded Performance
+              </SelectItem>
+              <SelectItem value="Partial_Outage">Partial Outage</SelectItem>
+              <SelectItem value="Major_Outage">Major Outage</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -166,6 +138,7 @@ export default function ServiceStatusForm() {
           Update Service Status
         </Button>
       </form>
-    </div>
-  );
+         
+    </div>
+  );
 }
