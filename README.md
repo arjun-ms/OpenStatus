@@ -34,7 +34,7 @@ KINDE_CLIENT_SECRET=*******************
 KINDE_ISSUER_URL=https://*******************
 KINDE_SITE_URL=http://localhost:3000
 KINDE_POST_LOGOUT_REDIRECT_URL=http://localhost:3000
-KINDE_POST_LOGIN_REDIRECT_URL=http://localhost:3000/dashboard
+KINDE_POST_LOGIN_REDIRECT_URL=http://localhost:3000/monitors
 ```
 
 ## Installation

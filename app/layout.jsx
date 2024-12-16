@@ -1,3 +1,5 @@
+// this is the template layout that will be applied to all the pages in (pages)/ folder
+
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { poppins } from "@/lib/fonts";

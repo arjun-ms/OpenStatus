@@ -17,7 +17,7 @@ export default async function Page() {
   // Check if the user is already logged in the browser
   const user = await getUser();
   if (!user || !user.id) {
-    redirect("/auth-callback?origin=dashboard");
+    redirect("/auth-callback?origin=monitors");
   }
 
   // If logged in browser, also check the database for the user
@@ -27,11 +27,12 @@ export default async function Page() {
     },
   });
 
-  // If no user is found in the database (i.e., dbUser is null), it redirects the user to the authentication page (/auth-callback?origin=dashboard), as the user needs to be authenticated in the system.
+  // If no user is found in the database (i.e., dbUser is null), it redirects the user to the authentication page (/auth-callback?origin=monitors), as the user needs to be authenticated in the system.
   if (!dbUser) {
-    redirect("/auth-callback?origin=dashboard");
+    redirect("/auth-callback?origin=monitors");
   }
 
+  // returns if all condtns are met
   return (
     <section className={`${inter.className}`}>
       <MaxWidthWrapper>

@@ -1,7 +1,5 @@
 "use client";
-import React, { useState } from "react";
-
-// import Navigation from "@/components/Navigation";
+import { useState } from "react";
 import EmptyState from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,7 +8,6 @@ import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -23,15 +20,11 @@ const Monitors = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
 
-  const handleCreateMonitor = (result) => {
+  const handleCreateMonitor = () => {
     toast({
       title: "Coming soon!",
       description: "Monitor creation will be implemented in the next version.",
     });
-
-    setIsDialogOpen(false);
-    // Optionally update the monitors list
-    setMonitors(prev => [...prev, result.data]);
   };
 
   return (
@@ -46,28 +39,21 @@ const Monitors = () => {
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button onClick={handleCreateMonitor}>
+              <Button>
                 <Plus className="w-4 h-4 mr-2" />
                 Create
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                
-                
-                <DialogTitle>Form</DialogTitle>
-                <ServiceStatusForm onSuccess={handleCreateMonitor} />
-                
-                {/* <DialogDescription>
-                  This action cannot be undone. This will permanently delete
-                  your account and remove your data from our servers.
-                </DialogDescription> */}
+                <DialogTitle>Service Status Form</DialogTitle>
+                <ServiceStatusForm />
               </DialogHeader>
             </DialogContent>
           </Dialog>
         </div>
 
-        {monitors && monitors.length > 0 ? (
+        {monitors && monitors?.length > 0 ? (
           <div className="space-y-4">
             <div className="flex gap-4">
               <div className="relative flex-1">
@@ -81,7 +67,6 @@ const Monitors = () => {
                 />
               </div>
             </div>
-            {/* Monitor list will be implemented in next version */}
           </div>
         ) : (
           <EmptyState onCreateClick={() => setIsDialogOpen(true)} />
