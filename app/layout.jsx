@@ -1,4 +1,4 @@
-// this is the template layout that will be applied to all the pages in (pages)/ folder
+// this is the global template layout that will be applied to all the pages in (pages)/ folder
 
 import "./globals.css";
 import { cn } from "@/lib/utils";
