@@ -12,8 +12,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import ServiceStatusForm from "@/app/(pages)/monitors/components/ServiceStatusForm";
-import { fetchAllServices } from "@/lib/actions";
+import IncidentStatusForm from "@/app/(pages)/incidents/components/IncidentsStatusForm";
+import { fetchAllIncidents } from "@/lib/actions";
 
 import {
   Table,
@@ -26,23 +26,24 @@ import {
   TableFooter,
 } from "@/components/ui/table";
 import { format } from "date-fns";
+import EmptyIncidents from "@/components/EmptyIncidents";
 
-const Monitors = ({ data }) => {
+const Incidents = ({ data }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
 
-  const [services, setServices] = useState([]);
+  const [incidents, setIncidents] = useState([]);
   console.log(data);
 
-  // for displaying monitors
+  // for displaying Incidents
   useEffect(() => {
-    async function loadServices() {
-      const result = await fetchAllServices();
+    async function loadIncidents() {
+      const result = await fetchAllIncidents();
       if (result.success) {
-        setServices(result.data);
+        setIncidents(result.data);
       }
     }
-    loadServices();
+    loadIncidents();
   }, []);
 
   const handleCloseDialog = () => {
@@ -54,9 +55,9 @@ const Monitors = ({ data }) => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Monitors</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Incidents</h1>
             <p className="mt-1 text-sm text-gray-500">
-              Overview of all your monitors.
+              Overview of all your incidents.
             </p>
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -68,44 +69,45 @@ const Monitors = ({ data }) => {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Service Status Form</DialogTitle>
-                <ServiceStatusForm onClose={handleCloseDialog} />
+                <DialogTitle>Incidents Form</DialogTitle>
+                <IncidentStatusForm onClose={handleCloseDialog} />
               </DialogHeader>
             </DialogContent>
           </Dialog>
         </div>
 
-        {services.length > 0 ? (
+        {incidents.length > 0 ? (
           <div className="space-y-4">
             <div className="flex gap-4">
               <div className="relative flex-1">
-                {/* table to display all the services */}
+                {/* table to display all the incidents */}
                 <Table>
-                  <TableCaption>All Services</TableCaption>
+                  <TableCaption>All Incidents</TableCaption>
                   <TableHeader>
                     <TableRow>
+                      
+                      <TableHead className="text-center">Incident Name</TableHead>
                       <TableHead className="w-[100px] text-center">
-                        Name
+                        Service Name
                       </TableHead>
-                      <TableHead className="text-center">Method</TableHead>
                       <TableHead className="text-center">Status</TableHead>
                       <TableHead className="text-center">Created At</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {services.map((service) => (
-                      <TableRow key={service.id}>
+                    {incidents.map((incident) => (
+                      <TableRow key={incident.id}>
                         <TableCell className="text-center">
-                          {service.name}
+                          {incident.title}
                         </TableCell>
                         <TableCell className="text-center">
-                          {service.method}
+                          {incident.service.name}
                         </TableCell>
                         <TableCell className="text-center">
-                          {service.status}
+                          {incident.status}
                         </TableCell>
                         <TableCell className="text-center">
-                          {format(new Date(service.createdAt), "MM/dd/yyyy")}
+                          {format(new Date(incident.createdAt), "dd/MM/yyyy")}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -115,11 +117,11 @@ const Monitors = ({ data }) => {
             </div>
           </div>
         ) : (
-          <EmptyState onCreateClick={() => setIsDialogOpen(true)} />
+          <EmptyIncidents onCreateClick={() => setIsDialogOpen(true)} />
         )}
       </main>
     </div>
   );
 };
 
-export default Monitors;
+export default Incidents;
