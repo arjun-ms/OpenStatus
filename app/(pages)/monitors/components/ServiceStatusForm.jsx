@@ -1,6 +1,5 @@
-import { useEffect } from "react";
-import { useActionState } from "react";
-import { actionService } from "@/lib/actions";
+import { useEffect, useActionState } from "react";
+import { actionServiceCreate } from "@/lib/actions";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -11,30 +10,23 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRouter } from "next/navigation";
 
 export default function ServiceStatusForm({ onClose }) {
-  const [returnData, action, isPending] = useActionState(actionService, null);
-  const router = useRouter();
+  const [state, action, isPending] = useActionState(actionServiceCreate, null);
 
-  // Handle successful form submission
   useEffect(() => {
-    if (returnData && !returnData.error) {
-      // Navigate to monitors page
-      router.push("/monitors/");
+    if (state && !state.error) {
       // Close the dialog
-      if (onClose) {
-        onClose();
-      }
+      onClose();
     }
-  }, [returnData, router, onClose]);
+  }, [state]);
 
   return (
     <form action={action} className="space-y-4">
       {/* Error Display */}
-      {returnData && returnData.error && (
+      {state && state.error && (
         <div className="bg-red-100 text-red-700 p-3 rounded-md text-center">
-          {returnData.message}
+          {state.message}
         </div>
       )}
 
@@ -43,7 +35,6 @@ export default function ServiceStatusForm({ onClose }) {
         <Label htmlFor="serviceName">Service Name</Label>
         <Input
           type="text"
-          id="serviceName"
           name="serviceName"
           placeholder="Enter service name"
           required
@@ -55,7 +46,6 @@ export default function ServiceStatusForm({ onClose }) {
         <Label htmlFor="link">Service Link</Label>
         <Input
           type="url"
-          id="link"
           name="link"
           placeholder="https://example.com"
           required
@@ -66,7 +56,7 @@ export default function ServiceStatusForm({ onClose }) {
       <div className="space-y-2">
         <Label htmlFor="httpMethod">HTTP Method</Label>
         <Select name="httpMethod" defaultValue="GET">
-          <SelectTrigger id="httpMethod">
+          <SelectTrigger>
             <SelectValue placeholder="Select Method" />
           </SelectTrigger>
           <SelectContent>
@@ -80,7 +70,7 @@ export default function ServiceStatusForm({ onClose }) {
       <div className="space-y-2">
         <Label htmlFor="serviceStatus">Service Status</Label>
         <Select name="serviceStatus" defaultValue="OPERATIONAL">
-          <SelectTrigger id="serviceStatus">
+          <SelectTrigger>
             <SelectValue placeholder="Select Status" />
           </SelectTrigger>
           <SelectContent>
