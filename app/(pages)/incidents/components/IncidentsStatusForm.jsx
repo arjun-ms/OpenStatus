@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useActionState } from "react";
-import { actionService } from "@/lib/actions";
+import { actionIncidentCreate } from "@/lib/actions";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 
 export default function IncidentStatusForm({ onClose }) {
-  const [returnData, action, isPending] = useActionState(actionService, null);
+  const [returnData, action, isPending] = useActionState(actionIncidentCreate, null);
   const router = useRouter();
 
   // Handle successful form submission
@@ -57,20 +57,22 @@ export default function IncidentStatusForm({ onClose }) {
           type="text"
           id="incident"
           name="incident"
+          placeholder="Enter incident happened"
           required
         />
       </div>
 
       {/* Incident Status Dropdown */}
       <div className="space-y-2">
-        <Label htmlFor="status">Incident Status</Label>
-        <Select name="status" defaultValue="GET">
+        <Label htmlFor="IncidentStatus">Incident Status</Label>
+        <Select name="IncidentStatus" defaultValue="Ongoing">
           <SelectTrigger id="status">
             <SelectValue placeholder="Select Status" />
           </SelectTrigger>
           <SelectContent>
+            <SelectItem value="Ongoing">Ongoing</SelectItem>
             <SelectItem value="Resolved">Resolved</SelectItem>
-            <SelectItem value="Not Resolved">Not Resolved</SelectItem>
+            <SelectItem value="Schedule">Scheduled</SelectItem>
           </SelectContent>
         </Select>
       </div>
