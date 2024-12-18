@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export default function ServiceStatusForm({ onClose }) {
+export default function ServiceCreateForm({ onClose }) {
   const [state, action, isPending] = useActionState(actionServiceCreate, null);
 
   useEffect(() => {

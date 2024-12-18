@@ -4,16 +4,16 @@ import prismadb from "@/lib/prismadb";
 import { inter } from "@/lib/fonts";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import Incidents from "./components/Incidents";
-
+import { actionFetchAllIncidents } from "@/lib/actions";
 
 export const metadata = {
-  title: "Home",
+  title: "Incidents",
 };
 
 export default async function Page() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-  
+
   if (!user || !user.id) {
     redirect("/auth-callback?origin=incidents");
   }
@@ -28,11 +28,12 @@ export default async function Page() {
     redirect("/auth-callback?origin=incidents");
   }
 
+  const result = await actionFetchAllIncidents();
 
   return (
     <section className={`${inter.className}`}>
       <MaxWidthWrapper>
-        <Incidents />
+        <Incidents incidents={result.data} />
       </MaxWidthWrapper>
     </section>
   );

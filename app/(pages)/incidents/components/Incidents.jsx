@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { actionIncidentEdit } from "@/lib/actions";
-import IncidentsStatusForm from "@/app/(pages)/incidents/components/IncidentsStatusForm";
+import IncidentCreateForm from "@/app/(pages)/incidents/components/IncidentCreateForm";
 import EmptyIncidents from "@/components/EmptyIncidents";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -61,7 +61,7 @@ const Incidents = ({ incidents }) => {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Incidents Form</DialogTitle>
-              <IncidentsStatusForm
+              <IncidentCreateForm
                 onClose={() => setIsDialogOpen(!isDialogOpen)}
               />
             </DialogHeader>

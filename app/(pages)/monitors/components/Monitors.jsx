@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { actionServiceEdit, actionServiceRemove } from "@/lib/actions";
-import ServiceStatusForm from "./ServiceStatusForm";
+import ServiceCreateForm from "@/app/(pages)/monitors/components/ServiceCreateForm";
 import EmptyState from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -63,7 +63,7 @@ const Monitors = ({ services }) => {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Service Status Form</DialogTitle>
-              <ServiceStatusForm
+              <ServiceCreateForm
                 onClose={() => setIsDialogOpen(!isDialogOpen)}
               />
             </DialogHeader>
